@@ -80,5 +80,5 @@ Make sure to place `src` and `run32.bat` in their own folder to prevent the scri
 
 ## Licensing
 
-ProcV is licensed under the GNU General Public License v3. I value free software and the modification of my work, and the GNU GPLv3 seemed like a best bit for this while restricting others from redistributing ProcV
+ProcV is licensed under the GNU General Public License v3. I value free software and the modification of my work, and the GNU GPLv3 seemed like a best fit for this while restricting others from redistributing ProcV
 under a proprietary license. In my eyes, all software should be free, and therefore, you are free to modify and redistribute ProcV as you wish.
