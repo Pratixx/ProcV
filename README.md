@@ -40,7 +40,7 @@ ProcV is still in development. It is far from a full OS, but it is improving dai
   - [X] CMOS / RTC
   - [X] PCI
   - [X] PS/2
-  - [ ] VESA (currently tightly integrated with GUI service)
+  - [X] VESA / VGA
   - [ ] NIC
   - [ ] AC'97
   - [ ] USB
