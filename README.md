@@ -74,6 +74,7 @@ To build ProcV, you only require 3 dependencies:
  - QEMU
  - NASM
  - i686 ELF GCC cross compiler
+
 If you are on Windows, you may build directly using the provided `run32.bat` Batch script in the repository. It will automatically compile the source into a disk image and boot you into the operating system through `qemu-system-i386`. This project does not come with a Bash script or a Make script.
 Make sure to place `src` and `run32.bat` in their own folder to prevent the script from dumping logs and temporary folders into your system.
 
