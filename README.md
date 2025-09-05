@@ -57,7 +57,7 @@ ProcV is still in development. It is far from a full OS, but it is improving dai
   - Current time
 - [ ] Services
   - [X] CLK (abstraction over LAPIC, TSC, and RTC for low-precision and high-precision timing, scheduling, and sleeping
-  - [ ] - [ ] HWD (abstraction over PCI)
+  - [ ] HWD (abstraction over PCI)
   - [ ] DSK (abstraction over NVMe, ATA, USB)
   - [X] DEV (abstraction over human peripherals such as mouse and keyboard)
   - [ ] GUI (abstraction over GPU or framebuffer for rendering to screen)
