@@ -6,6 +6,10 @@ ProcV is open-source, and its documentation is important. A goal of mine with Pr
 
 For those wishing to help improve code or documentation, please make an issue or contact me through Discord on what to improve.
 
+# ! BEFORE CONTINUING !
+Yes, there is no source code... or any code at all. I will publish it once I am comfortable with the state of the operating system. At the moment, ProcV is not exactly usable, and I want userspace, good documentation, and general improvements before
+publishing it.
+
 ## Roadmap
 ProcV is still in development. It is far from a full OS, but it is improving daily in terms of functionality.
 
