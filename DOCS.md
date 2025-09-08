@@ -97,7 +97,7 @@ Upon issuing `0x20` to the status port, the data port will return the Controller
 
 **0x60 - 0x7F** - Write to Controller RAM<br>
 &nbsp;&nbsp;&nbsp;&nbsp;
-Issuing any value in the specified range will tell the controller to write the next value passed to the status port to the appropriate byte of RAM
+Issuing any value in the specified range will tell the controller to write the next value passed to the data port to the appropriate byte of RAM
 that maps to the command value. The only byte that is valuable to write to is the Controller Configuration byte by issuing command `0x60`. Other bytes
 are generally considered useless to software.
 
