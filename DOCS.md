@@ -154,6 +154,11 @@ Makes the controller reads its test inputs and place the result in the data port
 Pulses the selected bits in the controller's output port for approximately 6 milliseconds. The low 4 bits select the respective bits in the controller output port. For example, if the first bit in the command is off, the first bit of the output port
 is pulsed and the CPU is reset.
 
+## Sources Used
+
+#[Keyboard & Auxiliary Device Controller Specification](https://www.ardent-tool.com/docs/pdf/ibm_hitrc07.pdf)
+#[The PS/2 Mouse Interface](https://eaw.app/Downloads/PS2_Mouse.pdf)
+
 <a id="section-ata"></a>
 # ATA
 
