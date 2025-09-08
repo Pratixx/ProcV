@@ -257,7 +257,7 @@ commonly seen in software.
 
 **Remote Mode**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;
-In this mode, the mouse will only notify the host of the changes when the software explicitly requests it. The software can request the mouse updates by issuing the Read Data command
+In this mode, the mouse will only notify the software of the changes when the software explicitly requests it. The software can request the mouse updates by issuing the Read Data command
 to the mouse. Once received by the mouse, it will provide the software the expected packets.
 
 **Wrap Mode**<br>
