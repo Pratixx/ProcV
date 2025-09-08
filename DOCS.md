@@ -35,7 +35,7 @@ typical memory-mapped I/O seen in more modern device interfaces.
 On x86, these can be written to or read from using the `in` and `out` mnemonics:
 
 ```
-mov al, 0x1234 ; Some command
+mov al, 07F ; Some command
 out 0x64, al ; Issue the command to the PS/2 controller
 in al, 0x60 ; Read the response from the PS/2 controller
 ```
@@ -66,10 +66,10 @@ The following commands can be sent to the status port to perform certain actions
 **0x20 - 0x3F** - Read from Controller RAM<br>
 &nbsp;&nbsp;&nbsp;&nbsp;
 Issuing any value in the specified range will return a byte from the controller's RAM. The only byte that is valuable to read from controller memory
-is byte 0 (by issuing 0x20 to the controller through the status register), as it is guaranteed to be the Controller Configuration byte. Other bytes are
+is byte 0 (by issuing `0x20` to the controller through the status register), as it is guaranteed to be the Controller Configuration byte. Other bytes are
 generally considered useless to software.
 
-Upon issuing 0x20 to the status port, the data port will return the Controller Configuration byte, which can be read to obtain the following structure:
+Upon issuing `0x20` to the status port, the data port will return the Controller Configuration byte, which can be read to obtain the following structure:
 
 | Bit | Name            | Description                                                                                                         |
 |-----|-----------------|---------------------------------------------------------------------------------------------------------------------|
