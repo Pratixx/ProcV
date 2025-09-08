@@ -271,6 +271,9 @@ The software may send any of the following commands to the mouse. When in Stream
 It is also important to note that a majority of the following commands will return an acknowledge byte in the data port, which must be read before issuing any further
 commands to the i8042 / PS/2 controller, let alone the mouse itself.
 
+A majority of the following commands return the auxiliary signal `0xFA`. It is essential to ensure that the mouse returns this; otherwise, the software should assume
+an error ocurred while processing the command.
+
 **0xFF - Reset**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;
 The mouse will respond with the acknowledge signal in the data port, and will enter Reset Mode.
