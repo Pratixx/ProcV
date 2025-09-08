@@ -175,7 +175,7 @@ the first bit is off to reset the CPU.
 
 **0xD1** - Write Output Port<br>
 &nbsp;&nbsp;&nbsp;&nbsp;
-Tells the controller to place the next byte written to the data port into the controller output port. Type 2 controllers can only write to the first bit (i.e. the A20 gate).
+Tells the controller to place the next byte written to the data port into the controller output port. Type 2 controllers can only write to the second bit (i.e. the A20 gate).
 
 **0xD2** - Write Keyboard Output Buffer<br>
 &nbsp;&nbsp;&nbsp;&nbsp;
