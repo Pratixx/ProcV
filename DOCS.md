@@ -6,9 +6,9 @@ All code snippets present will use ISO C and Intel syntax Assembly.
 **Table of Contents**
 
 - [PS/2](#section-ps/2)
+- [CMOS](#section-cmos)
 - [ATA](#section-ata)
 - [PCI](#section-pci)
-- [CMOS](#section-cmos)
 - [VESA](#section-vesa)
 - [VGA](#section-vga)
 
@@ -421,6 +421,87 @@ out 0x60, ah ; The output port has been written to and the A20 gate is now enabl
 
 [The PS/2 Mouse Interface](https://eaw.app/Downloads/PS2_Mouse.pdf)
 
+<a id="section-cmos"></a>
+# CMOS
+
+The CMOS is an abbrevation for the Complementery Metal Oxide Semiconductor, which consists of a battery and a chip on the motherboard which primarily provide a volatile storage mechanism for the firmware
+settings and the RTC (Real-Time Clock). It also comes with a couple additional features and configurations due to the choice to embed multiple different concepts into the same controller back then. Although,
+the primary usage of the CMOS by software is for toggling NMIs (Non-Maskable Interrupts), reading the RTC, and 
+
+Note that the following commands and ports assume that you are programming for an AT-compatible system. 
+
+## Implementation
+
+These PS/2 devices are interacted with using a status port and a data port. Due to their age, these two ports are accessed using port-mapped I/O, contrary to the more
+typical memory-mapped I/O seen in more modern device interfaces.
+
+### CMOS Ports
+| Hex  | Name        | Description                                                                                               |
+|------|-------------|-----------------------------------------------------------------------------------------------------------|
+| 0x70 | Out Port    | Address indices are submitted to the out port, which<br>the CMOS will return the data of in the in port.  |
+| 0x71 | In Port     | Can be read after a submission to read from the CMOS<br>using the out port to obtain the requested byte.  |
+
+On x86, these can be written to or read from using the `in` and `out` mnemonics:
+
+```
+mov al, 0x14 ; Some address
+out 0x70, al ; Tell the CMOS what address we want to read from
+in al, 0x71  ; Read the byte of memory that the CMOS returned
+```
+
+### CMOS RAM Contents
+
+You may read up to 64 bytes of RAM from the CMOS, but only 34 of those bytes contain spec-defined values. These values are:
+
+| Byte | Name          | Description                                                                                                                        |
+|------|---------------|------------------------------------------------------------------------------------------------------------------------------------|
+| 0    | Seconds       | Total seconds elapsed in the last minute. Overflows at 60, resetting itself and incrementing the minute.                           |
+| 1    | Second Alarm  | Can be configured alongside other alarm addresses to trigger IRQ8 when the specified time is hit.                                  |
+| 2    | Minutes       | Total minutes elapsed in the last hour. Overflows at 60, resetting itself and incrementing the hour.                               |
+| 3    | Minute Alarm  | Can be configured alongside other alarm addresses to trigger IRQ8 when the specified time is hit.                                  |
+| 4    | Hours         | Total hours elapsed in the last day. Overflows at 24 or 12, resetting itself and incrementing the day of week and day of month.    |
+| 5    | Hour Alarm    | Can be configured alongside other alarm addresses to trigger IRQ8 when the specified time is hit.                                  |
+| 6    | Day of Week   | Total days elapsed in the last week. Overflows at 7, resetting itself to 0.                                                        |
+| 7    | Day of Month  | Total days elapsed in the last month. Overflows depending on leap year and current month.                                          |
+| 8    | Months        | Total months elapsed in the last year. Overflows at 12, resetting itself and incrementing the year counter.                        |
+| 9    | Year          | Total years elapsed in the last century. Overflows at 60, resetting itself and incrementing the century if present.                |
+| 10   | Status Reg A  | Controls the RTC oscillator and interrupt rate of the RTC. Additionally contains the Update In Progress bit.                       |
+| 11   | Status Reg B  | Configures various features and states of the RTC, as well as handling toggling interrupts.                                        |
+| 12   | Status Reg C  | Indicates what interrupts have been fired since the last read of this register.                                                    |
+| 13   | Status Reg D  | Provides the current state of the CMOS battery, and whether or not it is currently dead or not.                                    |
+| 14   | Diagnostics   | Provides system boot diagnostics from POST.                                                                                        |
+| 15   | Shutdown Stat | Specific to the current system firmware.                                                                                           |
+| 16   | Diskette Type | Indicates which kinds of diskettes are installed in the system.                                                                    |
+| 17   | Reserved      | This byte is effectively redundant and contains no useful information.                                                             |
+| 18   | Disk Type     | Indicates which kinds of fixed disks are installed in the system.                                                                  |
+| 19   | Reserved      | This byte is effectively redundant and contains no useful information.                                                             |
+| 20   | Equipment     | Indicates the number of diskettes installed in the system, the current graphics mode, and math coprocessor presence.               |
+| 21   | Base Mem Low  | Indicates the low byte of the total amount of conventional system RAM installed in kilobytes.                                      |
+| 22   | Base Mem High | Indicates the high byte of the total amount of conventional system RAM installed in kilobytes.                                     |
+| 23   | Ext Mem Low   | Indicates the low byte of the total amount of extended system RAM installed in kilobytes.                                          |
+| 24   | Ext Mem High  | Indicates the high byte of the total amount of extended system RAM installed in kilobytes.                                         |
+| 25   | Reserved      | This byte is effectively redundant and contains no useful information.                                                             |
+| 26   | Checksum High | The high byte of the CMOS checksum. All further CMOS RAM is excluded from this checksum.                                           |
+| 27   | Checksum Low  | The low byte of the CMOS checksum. All further CMOS RAM is excluded from this checksum.                                            |
+| 28   | Exp Mem Low   | An additional register to provide the low byte of total extended system RAM installed in kilobytes.                                |
+| 29   | Exp Mem High  | An additional register to provide the high byte of total extended system RAM installed in kilobytes.                               |
+| 30   | Century       | Total centuries elapsed since 1 CE. Overflows at 256, which will be the cause of the next Y2K.                                     |
+| 31   | Information   | Indicates certain expansion presences and miscellaneous information.                                                               |
+
+Any unlisted memory address is considered reserved and should not be accessed.
+
+### Readable CMOS Addresses
+
+**Bytes 0 - 9**
+
+These are explained in the table above and all provide timing information or alarm configuration for the CMOS.
+
+FINISH THIS
+
+## Sources Used
+
+[IBM PC AT Technical Reference](bitsavers.trailing-edge.com/pdf/ibm/pc/at/1502494_PC_AT_Technical_Reference_Mar84.pdf)
+
 <a id="section-ata"></a>
 # ATA
 
@@ -428,11 +509,6 @@ This chapter has not been written yet.
 
 <a id="section-pci"></a>
 # PCI
-
-This chapter has not been written yet.
-
-<a id="section-cmos"></a>
-# CMOS
 
 This chapter has not been written yet.
 
