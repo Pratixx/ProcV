@@ -480,21 +480,35 @@ You may read up to 64 bytes of RAM from the CMOS, but only 34 of those bytes con
 | 22   | Base Mem High | Indicates the high byte of the total amount of conventional system RAM installed in kilobytes.                                     |
 | 23   | Ext Mem Low   | Indicates the low byte of the total amount of extended system RAM installed in kilobytes.                                          |
 | 24   | Ext Mem High  | Indicates the high byte of the total amount of extended system RAM installed in kilobytes.                                         |
-| 25   | Reserved      | This byte is effectively redundant and contains no useful information.                                                             |
-| 26   | Checksum High | The high byte of the CMOS checksum. All further CMOS RAM is excluded from this checksum.                                           |
-| 27   | Checksum Low  | The low byte of the CMOS checksum. All further CMOS RAM is excluded from this checksum.                                            |
-| 28   | Exp Mem Low   | An additional register to provide the low byte of total extended system RAM installed in kilobytes.                                |
-| 29   | Exp Mem High  | An additional register to provide the high byte of total extended system RAM installed in kilobytes.                               |
-| 30   | Century       | Total centuries elapsed since 1 CE. Overflows at 256, which will be the cause of the next Y2K.                                     |
-| 31   | Information   | Indicates certain expansion presences and miscellaneous information.                                                               |
+| ...  | Reserved      | Bytes between address 24 and 46 are all reserved and should not be accessed.                                                       |
+| 46   | Checksum High | The high byte of the CMOS checksum. All further CMOS RAM is excluded from this checksum.                                           |
+| 47   | Checksum Low  | The low byte of the CMOS checksum. All further CMOS RAM is excluded from this checksum.                                            |
+| 48   | Exp Mem Low   | An additional register to provide the low byte of total extended system RAM installed in kilobytes.                                |
+| 49   | Exp Mem High  | An additional register to provide the high byte of total extended system RAM installed in kilobytes.                               |
+| 50   | Century       | Total centuries elapsed since 1 CE. Overflows at 256, which will be the cause of the next Y2K.                                     |
+| 51   | Information   | Indicates certain expansion presences and miscellaneous information.                                                               |
 
 Any unlisted memory address is considered reserved and should not be accessed.
 
 ### Readable CMOS Addresses
 
-**Bytes 0 - 9**
+**Bytes 0 - 9 - RTC Times & Alarms**
 
 These are explained in the table above and all provide timing information or alarm configuration for the CMOS.
+
+**Byte 10 - Status Register A**
+
+Status Register A controls the oscillator in the RTC and its interrupt rate. It also contains the Update In Progress bit to check if the CMOS is currently updating its RAM.
+
+| Bit | Name            | Description                                                                                                         |
+|-----|-----------------|---------------------------------------------------------------------------------------------------------------------|
+| 7   | UIP             | Update In Progress. When on, indicates that the CMOS is currently updating the state of the CMOS RAM.               |
+| 6-4 | Freq Divider    | Select the base frequency that is used for periodic interrupts to IRQ8.                                             |
+| 3-0 | Rate Selection  | Select the divider against the frequency divider used for periodic interrupts to IRQ8.                              |
+
+- It is recommended to wait for the UIP bit to clear before reading from the CMOS to prevent erroneous or corrupted reads.
+
+
 
 FINISH THIS
 
